@@ -7,11 +7,12 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class BoundedStreamWordCount {
+public class StreamWordCount {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> streamSource = env.readTextFile("input/words.txt");
+        DataStreamSource<String> streamSource = env.socketTextStream("127.0.0.1", 8888);
+
         // 转换
         SingleOutputStreamOperator<Tuple2<String, Long>> wordTuple = streamSource
                 .flatMap(Util::of)
@@ -25,5 +26,4 @@ public class BoundedStreamWordCount {
         // 执行
         env.execute();
     }
-
 }
