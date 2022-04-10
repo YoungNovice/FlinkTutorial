@@ -14,12 +14,9 @@ public class BoundedStreamWordCount {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStreamSource<String> streamSource = env.readTextFile("input/words.txt");
         // 转换
-        SingleOutputStreamOperator<Tuple2<String, Long>> wordTuple = streamSource.flatMap((String line, Collector<Tuple2<String, Long>> collector) -> {
-            String[] words = line.split(" ");
-            for (String word : words) {
-                collector.collect(Tuple2.of(word, 1L));
-            }
-        }).returns(Types.TUPLE(Types.STRING, Types.LONG));
+        SingleOutputStreamOperator<Tuple2<String, Long>> wordTuple = streamSource
+                .flatMap(BoundedStreamWordCount::ofTuple2)
+                .returns(Types.TUPLE(Types.STRING, Types.LONG));
         // 分组
         KeyedStream<Tuple2<String, Long>, String> keyedStream = wordTuple.keyBy(data -> data.f0);
         // 求和
@@ -28,5 +25,12 @@ public class BoundedStreamWordCount {
         sum.print();
         // 执行
         env.execute();
+    }
+
+    public static void ofTuple2(String line, Collector<Tuple2<String, Long>> collector) {
+        String[] words = line.split(" ");
+        for (String word : words) {
+            collector.collect(Tuple2.of(word, 1L));
+        }
     }
 }
