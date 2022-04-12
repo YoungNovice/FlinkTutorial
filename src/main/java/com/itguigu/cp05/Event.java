@@ -6,7 +6,7 @@ public class Event {
 
     public String user;
     public String url;
-    private Long timestamp;
+    public Long timestamp;
 
     public Event() {
     }
