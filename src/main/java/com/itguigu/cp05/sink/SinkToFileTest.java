@@ -1,5 +1,6 @@
-package com.itguigu.cp05;
+package com.itguigu.cp05.sink;
 
+import com.itguigu.cp05.Event;
 import org.apache.flink.api.common.serialization.SimpleStringEncoder;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
