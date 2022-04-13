@@ -40,7 +40,7 @@ public class SourceTest {
         kafkaConsumer.setStartFromEarliest();
         DataStreamSource<String> kafkaStream = env.addSource(kafkaConsumer);
 
-        kafkaStream.print("kafka");
+        kafkaStream.print("sd");
         env.execute();
     }
 }
